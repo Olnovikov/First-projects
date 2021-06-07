@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>Document</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .Part {
+            width: 33%;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+
+        .header {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+
+        .field {
+
+            text-align: center;
+            opacity: 0, 5;
+
+        }
+
+        .addMore {
+            text-align: center;
+            padding-top: 20px;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+        }
+        .pagination{display: flex;
+            justify-content: center;
+            position: sticky; 
+            bottom: 0;
+            background-color: rgb(187, 183, 179);}
+
+        .page{margin-right: 7px;}
+
+        .forpagination{height: 50px;
+       
+    }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1 class="header" name='top1'>Список пассажиров</h1>
+        <div class="field">
+            <input type="text" @input='check' v-model='inputValue' placeholder='Surname'>
+        </div>
+
+        <div class="container">
+            <div class="Part">
+                <h1 class="forpagination" @click='sort' v-if='human.visible==true' v-for='human in Passagers'>{{human.Name}} </h1>
+
+            </div>
+            <div @dblclick='inverssort' class="Part">
+                <h1 class="forpagination" v-if='human.visible==true' v-for='human in Passagers'>{{human.Surname}} </h1>
+            </div>
+            <div class="Part">
+                <h1 class="forpagination" v-if='human.visible==true' v-for='human in Passagers'>{{human.Age}}</h1>
+            </div>
+
+        </div>
+        <div class="addMore" v-if='Passagers.length>5' @click='addMore'>Показать больше
+        </div>
+        <div class="pagination">
+        <div class="page" v-for='page in pages' >{{page}}</div>
+  
+    </div>
+    
+
+    </main>
+    <script>
+        class Human {
+            constructor(Name, Surname, Age) {
+                this.Name = Name
+                this.Surname = Surname
+                this.Age = Age
+            }
+            Name = ''
+            Surname = ''
+            Age = 0
+            visible = true
+        }
+
+
+        new Vue({
+            el: 'main',
+            data: {
+                Passagers: [
+                ],
+                inputValue: '',
+                page: 1,
+                pages: [],
+                elementsOnPage:5
+            },
+
+            methods: {
+            
+                sort() {
+
+                    this.Passagers = this.Passagers.sort((cur, next) => cur.Name > next.Name ? 1 : -1);
+
+                },
+                inverssort() { this.Passagers = this.Passagers.sort((cur, next) => cur.Name > next.Name ? -1 : 1); },
+
+                check() {
+                    this.Passagers.forEach(element => {
+
+                        if (element.Surname.includes(this.inputValue)) { element.visible = true }
+                        else {
+                            element.visible = false
+                        }
+                    });
+
+                },
+
+                addMore() {
+                    
+                    for (let index = this.elementsOnPage * this.page; index < (this.elementsOnPage * this.page + this.elementsOnPage); index++) {
+                        this.Passagers[index].visible = true
+                        
+                    }
+                    this.page++
+                    this.pages.push(this.page)
+                    tagspages=document.querySelectorAll('.page')
+
+                    for (let index = 0; index < tagspages.length; index++) {
+                        const element = tagspages[index];
+                        element.addEventListener('click',()=> window.scrollTo(0,index*this.elementsOnPage*20))
+                    
+                    }
+                  
+                },
+
+                fetchPassager() {
+                    return fetch('/users.json')
+                        .then(data => data.json())
+                        .then(result => {
+                            this.Passagers = result.data.map(cur => new Human(cur.Name, cur.Surname, cur.Age))
+                            if (this.Passagers.length > this.elementsOnPage) {
+                                for (let index = this.elementsOnPage; index < this.Passagers.length; index++) {
+                                    this.Passagers[index].visible = false
+
+
+                                }
+
+                            }
+                        })
+                }
+
+            },
+
+            mounted() {
+                this.fetchPassager()
+                this.pages.push(this.page)
+
+            }
+        })
+
+    </script>
+</body>
+
+</html>
