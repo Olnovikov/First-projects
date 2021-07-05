@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        .firstsqare {
+            background-color: red;
+        }
+
+        .secondsqare {
+            background-color: green;
+        }
+
+        .thirdsqare {
+            background-color: yellow;
+        }
+
+        .leftlist {
+            margin-bottom: 25px;
+        }
+
+        .sqare {
+            height: 20px;
+            width: 20px;
+            border: 1px solid black;
+        }
+
+        .down_checkbox {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .txt {
+            margin-right: 20px;
+            margin-left: 20px;
+        }
+
+        .count_input {
+            margin-left: 20px;
+            width: 35px;
+        }
+
+        .input_color {
+            height: 30px;
+            width: 30px;
+            border: none;
+        }
+
+        .leftlist_rightlist {
+            display: flex;
+        }
+
+        .sqares {
+            display: flex;
+        }
+
+        .buttonbox {
+            display: flex;
+        }
+
+        .button {
+            display: flex;
+            width: 150px;
+            padding: 10px 5px;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            background-color: #998675;
+            text-transform: uppercase;
+            border-radius: 5px;
+            margin: 0 15px 15px 15px;
+            cursor: pointer;
+            ;
+        }
+    </style>
+    <main>
+        <p>List1</p>
+        <input v-model="Lists_one.top_checked" @click='checkboxwork_List1' class="Lis1_top_checkbox" type="checkbox">
+        <div class="leftlist_rightlist">
+            <div class="leftlist first">
+
+                <div class=" down_checkbox">
+                    <input class="disabled_onmix" v-model="Items_one[0].checked" type="checkbox"
+                        @click='checkboxwork_List1_Item0'>
+                    <p class="txt">{{Items_one[0].name}} </p>
+                    <p class="txt">{{Items_one[0].count}}</p>
+                    <input v-on:input='choisecolor_Lists_one_list1' class="input_color" type="color">
+                    <input v-on:input='choisecount_Lists_one_list1' class="count_input disabled_onmix " type="text">
+                    <p class="txt">Введите число квадратов</p>
+                    <p class="txt"></p>
+                </div>
+
+
+                <div class=" down_checkbox">
+                    <input class="disabled_onmix" v-model="Items_one[1].checked" type="checkbox"
+                        @click='checkboxwork_List1_Item1'>
+                    <p class="txt">{{Items_one[1].name}} </p>
+                    <p class="txt">{{Items_one[1].count}}</p>
+                    <input v-on:input='choisecolor_Lists_one_list2' class="input_color" type="color">
+                    <input v-on:input='choisecount_Lists_one_list2' class="count_input disabled_onmix" type="text">
+                    <p class="txt">Введите число квадратов</p>
+                </div>
+
+
+                <div class=" down_checkbox">
+                    <input class="disabled_onmix" v-model="Items_one[2].checked" type="checkbox"
+                        @click='checkboxwork_List1_Item2'>
+                    <p class="txt">{{Items_one[2].name}} </p>
+                    <p class="txt">{{Items_one[2].count}}</p>
+                    <input v-on:input='choisecolor_Lists_one_list3' class="input_color" type="color">
+                    <input v-on:input='choisecount_Lists_one_list3' class="count_input disabled_onmix" type="text">
+                    <p class="txt">Введите число квадратов</p>
+                </div>
+            </div>
+
+
+            <div class="rightlist first">
+                <p class="txt">List1 </p>
+                <div class="buttonbox">
+                    <div @click='sort_one' class="button">Отсортировать</div>
+                    <div @click='mix_one' class="button">Перемешать</div>
+
+                </div>
+                <div class="sqares">
+                    <div v-if='Items_one[0].checked==true' v-for='obj in Lists_one.List1'
+                        v-bind:style="{background:obj.color} " class="firstsqare sqare">
+                    </div>
+                    <div v-if='Items_one[1].checked==true' v-for='obj in Lists_one.List2'
+                        v-bind:style="{background:obj.color}" class="secondsqare sqare">
+                    </div>
+                    <div v-if='Items_one[2].checked==true' v-for='obj in Lists_one.List3'
+                        v-bind:style="{background:obj.color}" class="thirdsqare sqare">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <script>
+        let app = new Vue(
+            {
+                el: 'main',
+                data: {
+                    Items_one: [
+                        {
+                            name: 'Item1',
+                            color: 'red',
+                            count: 4,
+                            countforsort: '',
+                            checked: true
+
+                        },
+                        {
+                            name: 'Item2',
+                            color: 'green',
+                            count: 3,
+                            countforsort: '',
+                            checked: true
+
+                        },
+                        {
+                            name: 'Item3',
+                            color: 'yellow',
+                            count: 6,
+                            countforsort: '',
+                            checked: true
+
+                        },],
+                    Lists_one: {
+                        List1: [],
+                        List2: [],
+                        List3: [],
+                        Commonlist: [],
+                        top_checked: true,
+                    },
+
+                },
+
+                methods: {
+                    choisecount_Lists_one_list1(event) {
+                        if (event.target.value >= 0) {
+                            this.Items_one[0].count = event.target.value
+                            this.Lists_one.List1 = []
+                            this.Fill_Lists_one_list1()
+
+                        }
+                    },
+                    choisecount_Lists_one_list2(event) {
+                        if (event.target.value >= 0) {
+                            this.Items_one[1].count = event.target.value
+                            this.Lists_one.List2 = []
+                            this.Fill_Lists_one_list2()
+
+                        }
+                    },
+                    choisecount_Lists_one_list3(event) {
+                        if (event.target.value >= 0) {
+                            this.Items_one[2].count = event.target.value
+                            this.Lists_one.List3 = []
+                            this.Fill_Lists_one_list3()
+                        }
+                    },
+                    Fill_Lists_one_list1() {
+                        for (let i = 0; i < this.Items_one[0].count; i++) {
+                            this.Lists_one.List1.push(this.Items_one[0])
+
+                        }
+                    },
+                    Fill_Lists_one_list2() {
+                        for (let i = 0; i < this.Items_one[1].count; i++) {
+                            this.Lists_one.List2.push(this.Items_one[1])
+
+                        }
+                    },
+                    Fill_Lists_one_list3() {
+                        for (let i = 0; i < this.Items_one[2].count; i++) {
+                            this.Lists_one.List3.push(this.Items_one[2])
+
+                        }
+                    },
+                    choisecolor_Lists_one_list1() { this.Items_one[0].color = event.target.value },
+                    choisecolor_Lists_one_list2() { this.Items_one[1].color = event.target.value },
+                    choisecolor_Lists_one_list3() { this.Items_one[2].color = event.target.value },
+                    sort_one() {
+                        let disabled = document.querySelectorAll('.disabled_onmix')
+                        disabled.forEach(element => {
+                            element.removeAttribute('disabled', 'disabled')
+
+                        });
+                        this.Lists_one.List1 = []
+                        this.Lists_one.List2 = []
+                        this.Lists_one.List3 = []
+                        this.Fill_Lists_one_list1()
+                        this.Fill_Lists_one_list2()
+                        this.Fill_Lists_one_list3()
+                    },
+                    mix_one() {
+                        let disabled = document.querySelectorAll('.disabled_onmix')
+                        disabled.forEach(element => {
+                            element.setAttribute('disabled', 'disabled')
+
+                        });
+                        this.Items_one.forEach(element => {
+                            element.countforsort = element.count
+
+                        });
+                        this.Lists_one.Commonlist = this.Lists_one.List1.concat(this.Lists_one.List2, this.Lists_one.List3)
+                        this.Items_one.forEach(element => {
+                            if (element.checked == false) {
+                                this.Lists_one.Commonlist = this.Lists_one.Commonlist.filter((item) => {
+                                    if (item.checked == true) {
+                                        return item
+
+                                    }
+
+                                })
+                                element.countforsort = 0
+                            }
+
+                        });
+
+
+                        for (let i = this.Lists_one.Commonlist.length - 1; i > 0; i--) {
+                            let j = Math.floor(Math.random() * (i + 1));
+                            [this.Lists_one.Commonlist[i], this.Lists_one.Commonlist[j]] = [this.Lists_one.Commonlist[j], this.Lists_one.Commonlist[i]];
+                        }
+
+
+                        this.Lists_one.List1 = this.Lists_one.Commonlist.slice([0], [this.Items_one[0].countforsort])
+                        this.Lists_one.List2 = this.Lists_one.Commonlist.slice([this.Items_one[0].countforsort], [this.Items_one[0].countforsort + this.Items_one[1].countforsort])
+                        this.Lists_one.List3 = this.Lists_one.Commonlist.slice([this.Items_one[0].countforsort + this.Items_one[1].countforsort])
+                        console.log(this.Lists_one.List1)
+                        console.log(this.Lists_one.List2)
+                        console.log(this.Lists_one.List3)
+                    },
+                    checkboxwork_List1() {
+                        if (this.Lists_one.top_checked == false) {
+                            this.Items_one.forEach(element => {
+                                element.checked = true
+
+                            });
+                            this.Lists_one.top_checked = true
+
+                        }
+
+                        else {
+                            this.Items_one.forEach(element => {
+                                element.checked = false
+
+                            });
+                            this.Lists_one.top_checked = false
+
+                        }
+
+                    },
+                    checkboxwork_List1_Item0() {
+                        if (this.Items_one[0].checked == false) {
+
+                            this.Items_one[0].checked = true
+                            this.Lists_one.top_checked = true
+
+                        }
+                        else {
+                            this.Items_one[0].checked = false
+
+                        }
+
+                        if (this.Items_one[0].checked == false) { if (this.Items_one[1].checked == false) { if (this.Items_one[2].checked == false) { this.Lists_one.top_checked = false } } }
+
+                    },
+                    checkboxwork_List1_Item1() {
+                        if (this.Items_one[1].checked == false) {
+
+                            this.Items_one[1].checked = true
+                            this.Lists_one.top_checked = true
+
+                        }
+                        else {
+                            this.Items_one[1].checked = false
+
+                        }
+
+                        if (this.Items_one[0].checked == false) { if (this.Items_one[1].checked == false) { if (this.Items_one[2].checked == false) { this.Lists_one.top_checked = false } } }
+
+
+                    },
+                    checkboxwork_List1_Item2() {
+                        if (this.Items_one[2].checked == false) {
+
+                            this.Items_one[2].checked = true
+                            this.Lists_one.top_checked = true
+
+                        }
+                        else {
+                            this.Items_one[2].checked = false
+
+                        }
+
+                        if (this.Items_one[0].checked == false) { if (this.Items_one[1].checked == false) { if (this.Items_one[2].checked == false) { this.Lists_one.top_checked = false } } }
+
+                    },
+
+                },
+
+                created() {
+                    this.Fill_Lists_one_list1()
+                    this.Fill_Lists_one_list2()
+                    this.Fill_Lists_one_list3()
+
+                }
+
+            })
+
+    </script>
+</body>
+
+</html>
