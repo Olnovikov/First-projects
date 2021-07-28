@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    </script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .backgroundbutton {
+            border: 1px solid black;
+            font-size: 25px;
+            margin: 20px 20px 20px 20px;
+            padding: 10px 10px 10px 10px;
+            border-radius: 4%;
+
+        }
+
+        .textbutton {
+            border: 1px solid black;
+            font-size: 25px;
+            margin: 20px 20px 20px 20px;
+            padding: 10px 10px 10px 10px;
+            border-radius: 4%;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: left;
+            padding-bottom: 30px;
+            border: 1px solid black;
+            padding: 15px 15px 15px 15px;
+
+        }
+
+        .polzunok {
+            margin: 15px 15px 15px 15px;
+        }
+
+        .app {
+            display: flex;
+            justify-content: space-around;
+
+        }
+
+        .allsliders {
+            width: 100%;
+        }
+
+        #polzunokgreen .ui-widget-header {
+            background: green;
+        }
+
+        #polzunokred .ui-widget-header {
+            background: red;
+        }
+
+        #polzunokblue .ui-widget-header {
+            background: blue;
+        }
+
+        .bright {
+            background-color: rgb(200, 199, 223);
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="buttons">
+        <div class="backgroundbutton">Background</div>
+        <div class="textbutton bright">Text</div>
+    </div>
+    <div class="app">
+        <div class="allsliders">
+            <div id="polzunokred"
+                class="polzunok ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
+                <div class="ui-slider-range ui-corner-all ui-widget-header ui-slider-range-min"></div><span tabindex="0"
+                    class="ui-slider-handle ui-corner-all ui-state-default" style="left: 48%;"></span>
+            </div>
+            <div id="polzunokgreen"
+                class="polzunok ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
+                <div class="ui-slider-range ui-corner-all ui-widget-header ui-slider-range-min"></div><span tabindex="0"
+                    class="ui-slider-handle ui-corner-all ui-state-default" style="left: 48%;"></span>
+            </div>
+
+            <div id="polzunokblue"
+                class="polzunok ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
+                <div class="ui-slider-range ui-corner-all ui-widget-header ui-slider-range-min"></div><span tabindex="0"
+                    class="ui-slider-handle ui-corner-all ui-state-default" style="left: 48%;"></span>
+            </div>
+        </div>
+        <div>
+            <p class="output active">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit, accusamus minus, doloribus sint dolores
+                eligendi eius assumenda fuga aliquid soluta ex odit ut numquam officiis non tempore
+
+            </p>
+        </div>
+    </div>
+    <script>
+
+
+        $("#polzunokgreen").slider({
+            animate: "slow",
+            range: "min",
+            value: 0,
+            min: 0,
+            max: 256,
+            slide: (e, ui) => {
+                Colors.green = ui.value
+                $(".active").css('color', `rgb( ${Colors.red},${Colors.green}, ${Colors.blue})`)
+                $(".passive").css('background-color', `rgb( ${Colors.red},${Colors.green}, ${Colors.blue})`)
+
+
+            }
+        });
+
+
+        $("#polzunokred").slider({
+            animate: "slow",
+            range: "min",
+            value: 0,
+            min: 0,
+            max: 256,
+            slide: (e, ui) => {
+                Colors.red = ui.value
+                $(".active").css('color', `rgb( ${Colors.red},${Colors.green}, ${Colors.blue})`)
+                $(".passive").css('background-color', `rgb( ${Colors.red},${Colors.green}, ${Colors.blue})`)
+
+
+            }
+        });
+
+        $("#polzunokblue").slider({
+            animate: "slow",
+            range: "min",
+            value: 0,
+            min: 0,
+            max: 256,
+            slide: (e, ui) => {
+                Colors.blue = ui.value
+                $(".active").css('color', `rgb( ${Colors.red},${Colors.green}, ${Colors.blue})`)
+                $(".passive").css('background-color', `rgb( ${Colors.red},${Colors.green}, ${Colors.blue})`)
+
+            }
+
+        });
+
+        let Colors = {
+            blue: 0,
+            red: 0,
+            green: 0,
+
+        }
+
+
+        $(".backgroundbutton").click(function () {
+            $(".output").removeClass("active")
+            $(".output").addClass("passive")
+            $(".backgroundbutton").addClass("bright")
+            $(".textbutton").removeClass("bright")
+        });
+
+        $(".textbutton").click(function () {
+            $(".output").removeClass("passive")
+            $(".output").addClass("active")
+            $(".textbutton").addClass("bright")
+            $(".backgroundbutton").removeClass("bright")
+        });
+
+
+    </script>
+</body>
+
+</html>
