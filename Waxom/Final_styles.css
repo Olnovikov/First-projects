@@ -648,6 +648,10 @@ padding: 20px 20px;}
 .resend_img_block:hover .calendar_top{background-color: #c7b299;}
 .resend_img_block:hover .reseng_img_header{color: #c7b299;}
 .resend_img_block:hover .resend_img_text{color: #ffffff;}
+.resend_link:hover {color: #ffffff;
+text-decoration: none;}
+.footer_read_more:hover {color: #ffffff;
+  text-decoration: none;}
 
 .footer_top{
   position: relative;
