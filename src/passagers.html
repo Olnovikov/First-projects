@@ -141,22 +141,24 @@
                 },
 
                 addMore() {
-                    
+                 if (this.Passagers[this.Passagers.length-1].visible!=true) 
+
+                 {
+                     
                     for (let index = this.elementsOnPage * this.page; index < (this.elementsOnPage * this.page + this.elementsOnPage); index++) {
                         this.Passagers[index].visible = true
+                      
                         
                     }
+                   
                     this.page++
                     this.pages.push(this.page)
-                    this.$refs.page.forEach(element => {element.addEventListener('click',()=> window.scrollTo(0,this.page*this.elementsOnPage*20))
-                        
-                    });               
-                    
+            
 
-             
-                  
+                   
+                 }
                 },
-
+               
                 fetchPassager() {
                     return fetch('/users.json')
                         .then(data => data.json())
@@ -179,7 +181,13 @@
                 this.fetchPassager()
                 this.pages.push(this.page)
 
-            }
+            },
+            updated(){ 
+                for (let index = 0; index < this.$refs.page.length; index++) {
+                        const element = this.$refs.page[index];
+                        element.addEventListener('click',()=> window.scrollTo(0,index*this.elementsOnPage*50))
+                    
+                    }}
         })
 
     </script>
