@@ -1,1 +1,10 @@
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+*{padding: 0;
+margin: 0;}
+
 /* You can add global styles to this file, and also import other style files */
+.main{background-color: white;
+  height: 100vh;
+  position: relative;
+  }

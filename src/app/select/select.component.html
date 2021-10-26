@@ -1,0 +1,17 @@
+
+<h2 class="header">Погода</h2>
+
+<ng-select (change)="getPoint($event)"  placeholder='введите город' class="select" (input)='search($event)' [minTermLength]='3' notFoundText='Введите минимум 3 символа, либо измените запрос' >
+  <ng-option  *ngFor="let city of citys"  [value]="city.id">{{city.name}}{{' '+ city.description}}</ng-option>
+</ng-select>
+
+
+<div class="weather" *ngFor="let weatherModel of weatherModels">{{weatherModel.main.temp}}</div>
+
+<!-- <ng-select [items]="citys"
+          bindLabel="name"
+          bindValue="id"
+          [(ngModel)]="selectedCar">
+</ng-select> -->
+
+
