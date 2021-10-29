@@ -8,6 +8,8 @@ import {HttpClientModule} from '@angular/common/http';
 import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { SwiperModule } from 'swiper/angular';
 import { SliderComponent } from './slider/slider.component';
+import { IconsComponent } from './icons/icons.component';
+
 
 
 
@@ -16,6 +18,7 @@ import { SliderComponent } from './slider/slider.component';
     AppComponent,
     SelectComponent,
     SliderComponent,
+    IconsComponent,
 
   ],
   imports: [
