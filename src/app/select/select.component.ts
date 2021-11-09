@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Output } from '@angular/core';
+import { Component, Output, OnInit  } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { EventEmitter } from '@angular/core';
@@ -7,14 +7,15 @@ import { GeoAnswer } from '../interfaces/geoAnswer';
 import { City } from '../interfaces/sity';
 import { WeatherAnswer } from '../interfaces/weatherAnswer';
 import { WeatherModel } from '../interfaces/weatherModel';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
 })
-export class SelectComponent {
-  constructor(public http: HttpClient) {}
+export class SelectComponent implements OnInit{
+  constructor(public http: HttpClient,public router:Router,public route:ActivatedRoute) {}
   lat: string = '';
   lon: string = '';
   SearchedCity: string = '';
@@ -27,10 +28,12 @@ export class SelectComponent {
         if (element.name + ' ' + element.description == e.$ngOptionLabel) {
           this.lon = element.Point.pos.split(' ', element.Point.pos.length)[0];
           this.lat = element.Point.pos.split(' ', element.Point.pos.length)[1];
+          this.router.navigate([ `/${element.Point.pos}`])
         }
       });
 
       this.getWeather();
+
     }
   }
   search(e: any) {
@@ -66,4 +69,13 @@ export class SelectComponent {
       });
   }
   @Output() weather: EventEmitter<WeatherModel[]> = new EventEmitter();
+
+  ngOnInit(): void {this.route.params.subscribe((params:Params)=>console.log(params)
+
+
+
+    )
+
+    }
+
 }

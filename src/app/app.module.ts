@@ -9,6 +9,7 @@ import { NgOptionHighlightModule } from '@ng-select/ng-option-highlight';
 import { SwiperModule } from 'swiper/angular';
 import { SliderComponent } from './slider/slider.component';
 import { IconsComponent } from './icons/icons.component';
+import { AppRoutingModule } from './app-routing.module';
 
 
 
@@ -27,7 +28,8 @@ import { IconsComponent } from './icons/icons.component';
     NgSelectModule,
     HttpClientModule,
     NgOptionHighlightModule,
-    SwiperModule
+    SwiperModule,
+    AppRoutingModule
 
 
   ],
