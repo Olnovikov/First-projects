@@ -27,7 +27,6 @@ export class SelectComponent implements OnInit {
   citys: City[] = [];
   weatherModels: WeatherModel[] = [];
 
-
   getPoint(e: any) {
     if (e) {
       console.log(e);
@@ -44,8 +43,6 @@ export class SelectComponent implements OnInit {
           });
         }
       });
-
-      this.getWeather();
     }
   }
   search(e: any) {
@@ -83,10 +80,12 @@ export class SelectComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
-      this.lat = params.lat;
       this.lon = params.lon;
+      this.lat = params.lat;
       this.sityName = params.sityName;
-      this.getWeather();
+      if (params.lon && params.lat && params.sityName) {
+        this.getWeather();
+      }
     });
   }
 }
