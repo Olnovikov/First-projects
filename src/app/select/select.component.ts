@@ -27,9 +27,6 @@ export class SelectComponent implements OnInit {
   citys: City[] = [];
   weatherModels: WeatherModel[] = [];
 
-  clearSelect() {
-    this.sityName = '';
-  }
 
   getPoint(e: any) {
     if (e) {
