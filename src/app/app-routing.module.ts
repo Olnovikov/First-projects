@@ -4,7 +4,7 @@ import { AppComponent } from "./app.component";
 
 const routs:Routes=[
 
-  {path:':koords',component:AppComponent},
+  {path:':coords',component:AppComponent},
 ]
 @NgModule ({
   imports:[RouterModule.forRoot(routs)],

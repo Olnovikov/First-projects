@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Output, OnInit  } from '@angular/core';
+import { Component, Output, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { EventEmitter } from '@angular/core';
@@ -14,26 +14,41 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
 })
-export class SelectComponent implements OnInit{
-  constructor(public http: HttpClient,public router:Router,public route:ActivatedRoute) {}
+export class SelectComponent implements OnInit {
+  constructor(
+    public http: HttpClient,
+    public router: Router,
+    public route: ActivatedRoute
+  ) {}
+  sityName: string = '';
   lat: string = '';
   lon: string = '';
   SearchedCity: string = '';
   citys: City[] = [];
   weatherModels: WeatherModel[] = [];
 
+  clearSelect() {
+    this.sityName = '';
+  }
+
   getPoint(e: any) {
     if (e) {
+      console.log(e);
       this.citys.forEach((element) => {
         if (element.name + ' ' + element.description == e.$ngOptionLabel) {
           this.lon = element.Point.pos.split(' ', element.Point.pos.length)[0];
           this.lat = element.Point.pos.split(' ', element.Point.pos.length)[1];
-          this.router.navigate([ `/${element.Point.pos}`])
+          this.router.navigate([`/`], {
+            queryParams: {
+              lat: this.lat,
+              lon: this.lon,
+              sityName: e.$ngOptionLabel,
+            },
+          });
         }
       });
 
       this.getWeather();
-
     }
   }
   search(e: any) {
@@ -65,17 +80,16 @@ export class SelectComponent implements OnInit{
       .subscribe((res) => {
         this.weatherModels = res;
         this.weather.emit(this.weatherModels);
-
       });
   }
   @Output() weather: EventEmitter<WeatherModel[]> = new EventEmitter();
 
-  ngOnInit(): void {this.route.params.subscribe((params:Params)=>console.log(params)
-
-
-
-    )
-
-    }
-
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      this.lat = params.lat;
+      this.lon = params.lon;
+      this.sityName = params.sityName;
+      this.getWeather();
+    });
+  }
 }
