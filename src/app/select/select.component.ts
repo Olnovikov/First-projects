@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Output, OnInit, Input } from '@angular/core';
+import { Component, Output, OnInit, Input,OnDestroy} from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { EventEmitter } from '@angular/core';
@@ -29,22 +29,29 @@ export class SelectComponent implements OnInit {
 
   getPoint(e: any) {
     if (e) {
-      this.citys.forEach((element) => {
-        if (element.name + ' ' + element.description == e.$ngOptionLabel) {
-          this.lon = element.Point.pos.split(' ', element.Point.pos.length)[0];
-          this.lat = element.Point.pos.split(' ', element.Point.pos.length)[1];
-          this.router.navigate([`/`], {
-            queryParams: {
-              lat: this.lat,
-              lon: this.lon,
-              sityName: e.$ngOptionLabel,
-              activeSlide:this.activeSlide
-            },
-          });
+      this.sityName=e.$ngOptionLabel
+      const city = this.citys.find((element) => element.name + ' ' + element.description == e.$ngOptionLabel) as City;
+
+        if (city) {
+          this.lon = city.Point.pos.split(' ', city.Point.pos.length)[0];
+          this.lat = city.Point.pos.split(' ', city.Point.pos.length)[1];
+
         }
-      });
+
+      this.setQueryParams()
     }
   }
+  setQueryParams(){
+    this.router.navigate([`/`], {
+    queryParams: {
+      lat: this.lat,
+      lon: this.lon,
+      sityName: this.sityName,
+      activeSlide:this.activeSlide
+    },
+
+  })
+}
   search(e: any) {
     this.SearchedCity = e.target.value;
     if (this.SearchedCity.trim() && this.SearchedCity.length > 3) {
@@ -76,15 +83,21 @@ export class SelectComponent implements OnInit {
         this.weather.emit(this.weatherModels);
       });
   }
-  @Input() activeSlide: any;
+  @Input() activeSlide?: number;
   @Output() weather: EventEmitter<WeatherModel[]> = new EventEmitter();
+
+ngOnDestroy(): void {
+
+  this.setQueryParams()
+}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
-      console.log(params)
       this.lon = params.lon;
       this.lat = params.lat;
       this.sityName = params.sityName;
+      this.activeSlide=params.activeSlide
+      console.log(params)
       if (params.lon && params.lat && params.sityName) {
         this.getWeather();
       }

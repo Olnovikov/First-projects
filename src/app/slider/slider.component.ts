@@ -41,6 +41,7 @@ export class SliderComponent {
   Kelvin: number = 273.15;
   getActiveSlide(swiper: any){this.currentSlide.emit(swiper.activeIndex)}
 
+
   @Input() WeatherObj: Record<string, WeatherModel[]> = {};
   @Output() currentSlide: EventEmitter<number> = new EventEmitter();
 }

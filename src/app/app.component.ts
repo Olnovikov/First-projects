@@ -8,7 +8,7 @@ import { WeatherModel } from './interfaces/weatherModel';
 })
 export class AppComponent {
   SliderObj: Record<string, WeatherModel[]> = {};
-  Slide:number=0
+  Slide?:number
   title = 'weather';
 
   getWeather(weatherModels: WeatherModel[]) {
