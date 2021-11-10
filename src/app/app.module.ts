@@ -31,7 +31,6 @@ import { AppRoutingModule } from './app-routing.module';
     SwiperModule,
     AppRoutingModule
 
-
   ],
   providers: [],
   bootstrap: [AppComponent]

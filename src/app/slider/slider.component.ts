@@ -1,9 +1,4 @@
-import {
-  Component,
-  ViewEncapsulation,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { Component, ViewEncapsulation, Input, OnInit } from '@angular/core';
 import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Navigation } from 'swiper';
 import { WeatherModel } from '../interfaces/weatherModel';
@@ -15,7 +10,7 @@ SwiperCore.use([Navigation]);
   selector: 'app-swiper',
 
   template: `<swiper
-  [initialSlide]="activeSlide"
+    (swiper)="setStartSlide($event)"
     (slideChange)="getActiveSlide($event)"
     *ngIf="WeatherObj"
     [navigation]="true"
@@ -41,21 +36,27 @@ SwiperCore.use([Navigation]);
 })
 export class SliderComponent implements OnInit {
   constructor(public router: Router, public route: ActivatedRoute) {}
-  activeSlide?:number
+
+  @Input() WeatherObj: Record<string, WeatherModel[]> = {};
+  activeSlide?: number;
   Kelvin: number = 273.15;
+
+  setStartSlide(swiper: any) {
+    swiper.slideTo(this.activeSlide);
+  }
+
   getActiveSlide(swiper: any) {
     this.router.navigate(['/'], {
       queryParams: { activeSlide: swiper.activeIndex },
       queryParamsHandling: 'merge',
     });
   }
+
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
       this.activeSlide = params.activeSlide;
-
-
     });
   }
 
-  @Input() WeatherObj: Record<string, WeatherModel[]> = {};
+
 }

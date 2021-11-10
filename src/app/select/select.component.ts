@@ -26,6 +26,7 @@ export class SelectComponent implements OnInit {
   SearchedCity: string = '';
   citys: City[] = [];
   weatherModels: WeatherModel[] = [];
+  @Output() weather: EventEmitter<WeatherModel[]> = new EventEmitter();
 
   getPoint(e: any) {
     if (e) {
@@ -47,6 +48,7 @@ export class SelectComponent implements OnInit {
       lat: this.lat,
       lon: this.lon,
       sityName: this.sityName,
+
     },
 
   })
@@ -83,7 +85,6 @@ export class SelectComponent implements OnInit {
       });
   }
 
-  @Output() weather: EventEmitter<WeatherModel[]> = new EventEmitter();
 
 
   ngOnInit(): void {
@@ -91,7 +92,6 @@ export class SelectComponent implements OnInit {
       this.lon = params.lon;
       this.lat = params.lat;
       this.sityName = params.sityName;
-      console.log(params)
       if (params.lon && params.lat && params.sityName) {
         this.getWeather();
       }
