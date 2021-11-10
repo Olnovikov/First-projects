@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input } from '@angular/core';
+import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Navigation } from 'swiper';
 import { WeatherModel } from '../interfaces/weatherModel';
@@ -8,7 +8,9 @@ SwiperCore.use([Navigation]);
 
 @Component({
   selector: 'app-swiper',
+
   template: `<swiper
+    (slideChange)="getActiveSlide($event)"
     *ngIf="WeatherObj"
     [navigation]="true"
     class="mySwiper"
@@ -35,7 +37,10 @@ SwiperCore.use([Navigation]);
   encapsulation: ViewEncapsulation.None,
 })
 export class SliderComponent {
-  @Input() WeatherObj: Record<string, WeatherModel[]> = {};
 
   Kelvin: number = 273.15;
+  getActiveSlide(swiper: any){this.currentSlide.emit(swiper.activeIndex)}
+
+  @Input() WeatherObj: Record<string, WeatherModel[]> = {};
+  @Output() currentSlide: EventEmitter<number> = new EventEmitter();
 }

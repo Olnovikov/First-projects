@@ -1,4 +1,8 @@
-<app-select (weather)="getWeather($event)"></app-select>
+<app-select
+  (weather)="getWeather($event)"
+  [activeSlide]="Slide"
+></app-select>
 <app-swiper
+  (currentSlide)="getSlide($event)"
   [WeatherObj]="SliderObj"
 ></app-swiper>

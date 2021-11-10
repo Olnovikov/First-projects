@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Output, OnInit } from '@angular/core';
+import { Component, Output, OnInit, Input } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { EventEmitter } from '@angular/core';
@@ -29,7 +29,6 @@ export class SelectComponent implements OnInit {
 
   getPoint(e: any) {
     if (e) {
-      console.log(e);
       this.citys.forEach((element) => {
         if (element.name + ' ' + element.description == e.$ngOptionLabel) {
           this.lon = element.Point.pos.split(' ', element.Point.pos.length)[0];
@@ -39,6 +38,7 @@ export class SelectComponent implements OnInit {
               lat: this.lat,
               lon: this.lon,
               sityName: e.$ngOptionLabel,
+              activeSlide:this.activeSlide
             },
           });
         }
@@ -76,10 +76,12 @@ export class SelectComponent implements OnInit {
         this.weather.emit(this.weatherModels);
       });
   }
+  @Input() activeSlide: any;
   @Output() weather: EventEmitter<WeatherModel[]> = new EventEmitter();
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
+      console.log(params)
       this.lon = params.lon;
       this.lat = params.lat;
       this.sityName = params.sityName;
@@ -88,4 +90,5 @@ export class SelectComponent implements OnInit {
       }
     });
   }
+
 }
