@@ -47,7 +47,6 @@ export class SelectComponent implements OnInit {
       lat: this.lat,
       lon: this.lon,
       sityName: this.sityName,
-      activeSlide:this.activeSlide
     },
 
   })
@@ -83,20 +82,15 @@ export class SelectComponent implements OnInit {
         this.weather.emit(this.weatherModels);
       });
   }
-  @Input() activeSlide?: number;
+
   @Output() weather: EventEmitter<WeatherModel[]> = new EventEmitter();
 
-ngOnDestroy(): void {
-
-  this.setQueryParams()
-}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
       this.lon = params.lon;
       this.lat = params.lat;
       this.sityName = params.sityName;
-      this.activeSlide=params.activeSlide
       console.log(params)
       if (params.lon && params.lat && params.sityName) {
         this.getWeather();

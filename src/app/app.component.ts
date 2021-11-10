@@ -8,7 +8,6 @@ import { WeatherModel } from './interfaces/weatherModel';
 })
 export class AppComponent {
   SliderObj: Record<string, WeatherModel[]> = {};
-  Slide?:number
   title = 'weather';
 
   getWeather(weatherModels: WeatherModel[]) {
@@ -23,9 +22,6 @@ export class AppComponent {
 
   }
 
-  getSlide(currentSlide:number){
-    this.Slide=currentSlide
-   }
 
 
 }
