@@ -49,8 +49,8 @@ export class SliderComponent implements OnInit {
 
   weatherModels: WeatherModel[] = [];
   WeatherObj: Record<string, WeatherModel[]> = {};
-
   Kelvin: number = 273.15;
+
   @ViewChild('swiper', { static: false }) swiper?: SwiperComponent;
 
   getActiveSlide(swiper: any) {

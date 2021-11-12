@@ -1,4 +1,10 @@
-import { Component, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Output,
+  OnInit,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { City } from '../interfaces/sity';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from '../api.service';
@@ -21,7 +27,6 @@ export class SelectComponent implements OnInit {
   lat: string = '';
   lon: string = '';
   citys: City[] = [];
-
 
   getPoint(e: any) {
     if (e) {
@@ -48,11 +53,13 @@ export class SelectComponent implements OnInit {
       },
     });
   }
-@Debounce(300)
+  @Debounce(300)
   search(e: any) {
-    this.SearchedCity = e.target.value
+    this.SearchedCity = e.target.value;
     if (this.SearchedCity.trim() && this.SearchedCity.length >= 3) {
-     this.apiService.getCoords(this.SearchedCity).subscribe((res) => (this.citys = res));
+      this.apiService
+        .getCoords(this.SearchedCity)
+        .subscribe((res) => (this.citys = res));
     }
   }
 
@@ -60,5 +67,5 @@ export class SelectComponent implements OnInit {
     this.route.queryParams.subscribe((params: Params) => {
       this.sityName = params.sityName;
     });
-   }
+  }
 }
