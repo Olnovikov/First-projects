@@ -9,6 +9,7 @@ import { SwiperComponent } from 'swiper/angular';
 import SwiperCore, { Navigation } from 'swiper';
 import { WeatherModel } from '../interfaces/weatherModel';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ApiService } from '../api.service';
 
 SwiperCore.use([Navigation]);
 
@@ -40,9 +41,14 @@ SwiperCore.use([Navigation]);
   encapsulation: ViewEncapsulation.None,
 })
 export class SliderComponent implements OnInit {
-  constructor(public router: Router, public route: ActivatedRoute) {}
+  constructor(
+    public router: Router,
+    public route: ActivatedRoute,
+    public apiServise: ApiService
+  ) {}
 
-  @Input() WeatherObj: Record<string, WeatherModel[]> = {};
+  weatherModels: WeatherModel[] = [];
+  WeatherObj: Record<string, WeatherModel[]> = {};
 
   Kelvin: number = 273.15;
   @ViewChild('swiper', { static: false }) swiper?: SwiperComponent;
@@ -53,11 +59,27 @@ export class SliderComponent implements OnInit {
       queryParamsHandling: 'merge',
     });
   }
+  getWeather(weatherModels: WeatherModel[]) {
+    this.WeatherObj = {};
+    weatherModels.forEach((element: WeatherModel) => {
+      let date = element.dt_txt.split(' ', element.dt_txt.length)[0];
+      if (!Object.keys(this.WeatherObj).includes(date)) {
+        this.WeatherObj[date] = [];
+      }
+      this.WeatherObj[date].push(element);
+    });
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
       if (this.swiper) {
         this.swiper.swiperRef.slideTo(params.activeSlide);
+      }
+      if (params.lon && params.lat && params.sityName) {
+        this.apiServise.getWeather(params.lat, params.lon).subscribe((res) => {
+          this.weatherModels = res;
+          this.getWeather(this.weatherModels);
+        });
       }
     });
   }

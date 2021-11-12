@@ -1,7 +1,5 @@
 import { Component, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { EventEmitter } from '@angular/core';
 import { City } from '../interfaces/sity';
-import { WeatherModel } from '../interfaces/weatherModel';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { Debounce } from 'lodash-decorators';
@@ -17,13 +15,13 @@ export class SelectComponent implements OnInit {
     public route: ActivatedRoute,
     public apiService: ApiService
   ) {}
+
   SearchedCity: string = '';
   sityName: string = '';
   lat: string = '';
   lon: string = '';
   citys: City[] = [];
-  weatherModels: WeatherModel[] = [];
-  @Output() weather: EventEmitter<WeatherModel[]> = new EventEmitter();
+
 
   getPoint(e: any) {
     if (e) {
@@ -60,15 +58,7 @@ export class SelectComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
-      this.lon = params.lon;
-      this.lat = params.lat;
       this.sityName = params.sityName;
-      if (params.lon && params.lat && params.sityName) {
-        this.apiService.getWeather(this.lat, this.lon).subscribe((res) => {
-          this.weatherModels = res;
-          this.weather.emit(this.weatherModels);
-        });
-      }
     });
-  }
+   }
 }
