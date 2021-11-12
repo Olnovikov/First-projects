@@ -54,10 +54,7 @@ export class SelectComponent implements OnInit {
   search(e: any) {
     this.SearchedCity = e.target.value
     if (this.SearchedCity.trim() && this.SearchedCity.length >= 3) {
-      let SityStream = this.apiService.getCoords(this.SearchedCity);
-      if (SityStream) {
-        SityStream.subscribe((res) => (this.citys = res));
-      }
+     this.apiService.getCoords(this.SearchedCity).subscribe((res) => (this.citys = res));
     }
   }
 
@@ -67,8 +64,7 @@ export class SelectComponent implements OnInit {
       this.lat = params.lat;
       this.sityName = params.sityName;
       if (params.lon && params.lat && params.sityName) {
-        let WeatherStream = this.apiService.getWeather(this.lat, this.lon);
-        WeatherStream.subscribe((res) => {
+        this.apiService.getWeather(this.lat, this.lon).subscribe((res) => {
           this.weatherModels = res;
           this.weather.emit(this.weatherModels);
         });

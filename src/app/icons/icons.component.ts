@@ -8,9 +8,9 @@ import { Component, Input, OnInit } from '@angular/core';
 export class IconsComponent implements OnInit {
 
   constructor() { }
-
+  @Input() icon:string=''
   ngOnInit(): void {
   }
-  @Input() icon:string=''
+
 
 }
