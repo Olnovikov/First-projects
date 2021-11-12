@@ -8,6 +8,7 @@
   (input)="search($event)"
   [minTermLength]="3"
   notFoundText="Введите минимум 3 символа, либо измените запрос"
+  #select
 
 >
   <ng-option *ngFor="let city of citys">{{ city.name }}{{ " " + city.description }}</ng-option>

@@ -4,7 +4,6 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { GeoAnswer } from './interfaces/geoAnswer';
 import { WeatherAnswer } from './interfaces/weatherAnswer';
-import { WeatherModel } from './interfaces/weatherModel';
 
 @Injectable({
   providedIn: 'root',
@@ -22,24 +21,19 @@ export class ApiService {
       .pipe(map((res) => (<WeatherAnswer>res).list));
   }
 
-  getCoords(e: any) {
-    this.SearchedCity = e.target.value;
-    if (this.SearchedCity.trim() && this.SearchedCity.length > 3) {
-      return this.http
-        .get<GeoAnswer>(
-          `${environment.geoApi}?apikey=${environment.apiKeyGeo}&format=json&geocode=${this.SearchedCity}&results=3`
-        )
-        .pipe(
-          map((res) =>
-            (<GeoAnswer>res).response.GeoObjectCollection.featureMember.map(
-              (res: { GeoObject: any }) => {
-                return res.GeoObject;
-              }
-            )
+  getCoords(SearchedCity: any) {
+    return this.http
+      .get<GeoAnswer>(
+        `${environment.geoApi}?apikey=${environment.apiKeyGeo}&format=json&geocode=${SearchedCity}&results=3`
+      )
+      .pipe(
+        map((res) =>
+          (<GeoAnswer>res).response.GeoObjectCollection.featureMember.map(
+            (res: { GeoObject: any }) => {
+              return res.GeoObject;
+            }
           )
-        );
-    } else {
-      return;
-    }
+        )
+      );
   }
 }

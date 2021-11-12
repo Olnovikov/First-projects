@@ -1,10 +1,10 @@
-
-import { Component, Output, OnInit } from '@angular/core';
+import { Component, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { City } from '../interfaces/sity';
 import { WeatherModel } from '../interfaces/weatherModel';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiService } from '../api.service';
+import { Debounce } from 'lodash-decorators';
 
 @Component({
   selector: 'app-select',
@@ -17,6 +17,7 @@ export class SelectComponent implements OnInit {
     public route: ActivatedRoute,
     public apiService: ApiService
   ) {}
+  SearchedCity: string = '';
   sityName: string = '';
   lat: string = '';
   lon: string = '';
@@ -49,15 +50,16 @@ export class SelectComponent implements OnInit {
       },
     });
   }
-
-  search(e: any){
-   let SityStream=this.apiService.getCoords(e)
-   if ( SityStream) {
-    SityStream.subscribe((res) => (this.citys = res));
-   }
-
+@Debounce(300)
+  search(e: any) {
+    this.SearchedCity = e.target.value
+    if (this.SearchedCity.trim() && this.SearchedCity.length >= 3) {
+      let SityStream = this.apiService.getCoords(this.SearchedCity);
+      if (SityStream) {
+        SityStream.subscribe((res) => (this.citys = res));
+      }
+    }
   }
-
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: Params) => {
